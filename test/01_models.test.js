@@ -1,22 +1,22 @@
-const chai = require('chai');
+const chai = require("chai");
 const expect = chai.expect;
-const Student = require('../db/models/student');
-const Test = require('../db/models/test');
-const db = require('../db/db');
+const Student = require("../db/models/student");
+const Test = require("../db/models/test");
+const db = require("../db/db");
 
-describe('Models', function () {
+describe("Models", function () {
   before(function () {
     return db.sync({ force: true });
   });
 
-  describe.only('The `Students` model', function () {
+  describe.only("The `Students` model", function () {
     //initial force sync to clear the db
 
     //create student BEFORE EACH test
     let student;
-    let firstName = 'Peter';
-    let lastName = 'Parker';
-    let email = 'peterP@spidey.web';
+    let firstName = "Peter";
+    let lastName = "Parker";
+    let email = "peterP@spidey.web";
 
     beforeEach(function () {
       student = Student.build({
@@ -33,85 +33,83 @@ describe('Models', function () {
       return Student.truncate({ cascade: true });
     });
 
-    describe('attributes definition', () => {
-      it('includes `firstName`, `lastName`, and `email` fields', async () => {
+    describe("attributes definition", () => {
+      it("includes `firstName`, `lastName`, and `email` fields", async () => {
         const savedStudent = await student.save();
-        expect(savedStudent.firstName).to.equal('Peter');
-        expect(savedStudent.lastName).to.equal('Parker');
-        expect(savedStudent.email).to.equal('peterP@spidey.web');
+        expect(savedStudent.firstName).to.equal("Peter");
+        expect(savedStudent.lastName).to.equal("Parker");
+        expect(savedStudent.email).to.equal("peterP@spidey.web");
       });
 
-      it('requires `firstName`', async () => {
+      it("requires `firstName`", async () => {
         try {
           student.firstName = null;
           await student.validate();
-          throw new Error('validation should fail when firstName is null');
+          throw new Error("validation should fail when firstName is null");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('notNull Violation');
+          expect(error.message).to.contain("notNull Violation");
         }
       });
 
-      it('requires `lastName`', async () => {
+      it("requires `lastName`", async () => {
         try {
           student.lastName = null;
           await student.validate();
-          throw new Error('validation should fail when lastName is null');
+          throw new Error("validation should fail when lastName is null");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('notNull Violation');
+          expect(error.message).to.contain("notNull Violation");
         }
       });
 
-      it('requires `email`', async () => {
+      it("requires `email`", async () => {
         try {
           student.email = null;
           await student.validate();
-          throw new Error('validation should fail when email is null');
+          throw new Error("validation should fail when email is null");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('notNull Violation');
+          expect(error.message).to.contain("notNull Violation");
         }
       });
 
-      it('requires `email` to be in an email form', async () => {
+      it("requires `email` to be in an email form", async () => {
         try {
-          student.email = 'hola world';
+          student.email = "hola world";
           await student.validate();
-          throw new Error(
-            'validation should fail when email is not in email form'
-          );
+          throw new Error("validation should fail when email is not in email form");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('Validation error');
+          expect(error.message).to.contain("Validation error");
         }
       });
       //end of `attributes definition` describe block
     });
 
-    describe('a `pre` create hook', () => {
+    describe("a `pre` create hook", () => {
       let newStudent;
       beforeEach(() => {
         newStudent = Student.build({
-          firstName: 'charles',
-          lastName: 'xavier',
-          email: 'charlie@brainy.com',
+          firstName: "charles",
+          lastName: "xavier",
+          email: "charlie@brainy.com",
         });
       });
 
-      it('capitalizes the first letter of the first and last name before save to the DB', async () => {
+      it("capitalizes the first letter of the first and last name before save to the DB", async () => {
         const savedStudent = await newStudent.save();
-        expect(savedStudent.firstName).to.equal('Charles');
-        expect(savedStudent.lastName).to.equal('Xavier');
+        expect(savedStudent.firstName).to.equal("Charles");
+        expect(savedStudent.lastName).to.equal("Xavier");
       });
     });
     //end of `options definition` describe block
 
     //end of `The Students model` describe block
   });
-  describe('The `Test` model', function () {
+  describe("The `Test` model", function () {
     let test;
-    let subject = 'Tree-climbing';
+    let subject = "Tree-climbing";
     let grade = 79;
 
     beforeEach(() => {
@@ -122,64 +120,61 @@ describe('Models', function () {
     });
 
     afterEach(() => {
-      return Promise.all([
-        Test.truncate({ cascade: true }),
-        Student.truncate({ cascade: true }),
-      ]);
+      return Promise.all([Test.truncate({ cascade: true }), Student.truncate({ cascade: true })]);
     });
 
-    describe('attributes definition', () => {
-      it('includes `subject` and `grade` fields', async () => {
+    describe("attributes definition", () => {
+      it("includes `subject` and `grade` fields", async () => {
         const savedTest = await test.save();
-        expect(savedTest.subject).to.equal('Tree-climbing');
+        expect(savedTest.subject).to.equal("Tree-climbing");
         expect(savedTest.grade).to.equal(79);
       });
 
-      it('requires `subject`', async () => {
+      it("requires `subject`", async () => {
         try {
           test.subject = null;
           await test.validate();
-          throw new Error('validation should fail when subject is null');
+          throw new Error("validation should fail when subject is null");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('notNull Violation');
+          expect(error.message).to.contain("notNull Violation");
         }
       });
 
-      it('requires `grade`', async () => {
+      it("requires `grade`", async () => {
         try {
           test.grade = null;
           await test.validate();
-          throw new Error('validation should fail when grade is null');
+          throw new Error("validation should fail when grade is null");
         } catch (error) {
           expect(error).to.be.an.instanceOf(Error);
-          expect(error.message).to.contain('notNull Violation');
+          expect(error.message).to.contain("notNull Violation");
         }
       });
       //end of `attributes definition` describe block
     });
 
-    describe('associations', () => {
-      it('belongs to a student', async () => {
+    describe("associations", () => {
+      it("belongs to a student", async () => {
         const newStudent = await Student.create({
-          firstName: 'Pepper',
-          lastName: 'Potts',
-          email: 'pp@salsa.com',
+          firstName: "Pepper",
+          lastName: "Potts",
+          email: "pp@salsa.com",
         });
         const newTest = await Test.create({
-          subject: 'sword-sharpening',
+          subject: "sword-sharpening",
           grade: 100,
         });
 
         await newTest.setStudent(newStudent);
 
         const foundTest = await Test.findOne({
-          where: { subject: 'sword-sharpening' },
-          include: { model: Student, as: 'student' },
+          where: { subject: "sword-sharpening" },
+          include: { model: Student, as: "student" },
         });
 
         expect(foundTest).to.exist; //eslint-disable-line no-unused-expressions
-        expect(foundTest.student.firstName).to.equal('Pepper');
+        expect(foundTest.student.firstName).to.equal("Pepper");
       });
     });
   });
