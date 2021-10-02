@@ -13,6 +13,6 @@ const Test = db.define("test", {
   },
 });
 
-Test.belongsTo(Student);
-Student.hasMany(Test);
+Test.belongsTo(Student, { as: "student" }); //FK of StudentId on Test Model
+Student.hasMany(Test); // FK of StudentId on Test Model
 module.exports = Test;
